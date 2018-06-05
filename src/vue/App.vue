@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div v-bind:class="{'top-wrap': true}">
         <div>
-            <h2>テキストバインディング</h2>
+            <h2>text binding</h2>
             <p>{{ message }}</p>
         </div>
         <div>
@@ -61,6 +61,24 @@
             </svg>
             <input type="range" min="0" max="100" v-model="radius">
         </div>
+        <div>
+            <h2>v-show and v-if</h2>
+            <p v-if="visible">show</p>
+            <p v-show="visible">show</p>
+            <button @click="visibleClick">
+                {{!visible ? "show" : "hide"}}
+            </button>
+        </div>
+        <div>
+            <h2>list data</h2>
+            <button @click="doAdd">add</button>
+            <button @click="doRemove(index)">remove</button>
+            <ul>
+                <li v-for="item in monsterList" v-bind:key="item.id">
+                    ID.{{item.id}} {{item.name}} HP.{{item.hp}}
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 <script>
@@ -70,16 +88,17 @@
             return {
                 //this properties is reactive
                 message: 'Hello Vue.js',
-                list: ['りんご', 'ばなな', 'いちご'],
                 outMessage: 'Initial message',
                 bindMessage: "Completed bind!",
                 contentMessage: "prop text",
+                bindStyle: 'red',
+                monsterName: "name",
+                count: 0,
+                radius: 50,
                 show1: true,
                 show2: true,
-                count: 0,
                 isClass: true,
-                bindStyle: 'red',
-                radius: 50,
+                visible: true,
                 classObject: {
                     color: 'red',
                     fontWeight: 'bold',
@@ -88,11 +107,14 @@
                     id: 1,
                     src: 'http://via.placeholder.com/350x150',
                     alt: "image_1",
-                }
+                },
+                list: ['apple', 'banana', 'orange'],
+                monsterList: [
+                    { id: 1, name: 'slime', hp: 100},
+                    { id: 2, name: 'goblin', hp: 200},
+                    { id: 3, name: 'dragon', hp: 500}
+                ],
             }
-        },
-        mounted: function(){
-            this.scroll = 100
         },
         methods: {
             handleClick() {
@@ -100,6 +122,23 @@
             },
             increment() {
                 this.count += 1
+            },
+            visibleClick() {
+                this.visible = !this.visible
+            },
+            doAdd() {
+                let max = this.monsterList.reduce(function(a, b){
+                    return a.id > b.id ? a.id : b.id
+                }, 0);
+
+                this.monsterList.push({
+                    id: max + 1,
+                    name: this.monsterName,
+                    hp: Math.floor(Math.random() * 1000)
+                })
+            },
+            doRemove() {
+                this.monsterList.splice(index, 1)
             }
         }
     }
