@@ -71,13 +71,19 @@
         </div>
         <div>
             <h2>list data</h2>
+            <input v-model="monsterName">
             <button @click="doAdd">add</button>
-            <button @click="doRemove(index)">remove</button>
             <ul>
-                <li v-for="item in monsterList" v-bind:key="item.id">
+                <li v-for="(item, index) in monsterList" v-bind:key="item.id">
                     ID.{{item.id}} {{item.name}} HP.{{item.hp}}
+                    <button @click="doRemove(index)">×</button>
                 </li>
             </ul>
+        </div>
+        <div>
+            <h2>html Entity</h2>
+            <p v-html="htmlEnt"></p>
+            <small>Have not Used to query and import data.</small>
         </div>
     </div>
 </template>
@@ -93,6 +99,7 @@
                 contentMessage: "prop text",
                 bindStyle: 'red',
                 monsterName: "name",
+                htmlEnt: "export<strong>HTML</strong>element",
                 count: 0,
                 radius: 50,
                 show1: true,
@@ -137,7 +144,7 @@
                     hp: Math.floor(Math.random() * 1000)
                 })
             },
-            doRemove() {
+            doRemove(index) {
                 this.monsterList.splice(index, 1)
             }
         }
