@@ -1,5 +1,5 @@
 <template>
-    <div v-bind:class="{'top-wrap': true}">
+    <div v-bind:class="{'contents-wrap': true}">
         <div>
             <h2>text binding</h2>
             <p>{{ message }}</p>
