@@ -67,7 +67,7 @@
                 checked: false,
                 bindImage: {
                     id: 'b_1',
-                    src: this.preview,
+                    src: '',
                     alt: 'bindImage',
                 },
                 imageEv: {

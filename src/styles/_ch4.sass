@@ -1,0 +1,55 @@
+$videoW: 400px
+$videoH: 200px
+$btnSize: 80px
+$HalfBtnSize: $btnSize/1.3
+
+.topics
+  border-bottom: none!important
+  padding: 0 0 10px!important
+  margin: 0 0 0 10px
+
+.video-wrap
+  position: relative
+  border-bottom: none!important
+  width: $videoW
+  height: auto
+  video
+    max-width: 100%
+.video-btn
+  z-index: 1
+  position: absolute
+  top: calc(#{$videoH} / 2 + #{$btnSize} / 2.5)
+  left: calc(#{$videoW} / 2 - #{$btnSize} / 2)
+  height: $btnSize
+  width: $btnSize
+  opacity: .6
+  border-radius: 50%
+  outline: 0
+  cursor: pointer
+  font-size: 1.5em
+  transition: all .6s
+  animation: nextMovement .6s both
+  &:hover
+    border: none
+.stopped-btn
+  width: calc(#{$btnSize}/1.5)
+  height: calc(#{$btnSize}/1.5)
+  animation: initialMovement .6s both
+  opacity: .3
+  font-size: 1em
+
+@keyframes initialMovement
+  from
+    margin: 0
+  to
+    margin-top: calc(#{$videoH} / 2.2)
+    margin-left: calc(#{$videoW} / 2.2)
+
+@keyframes nextMovement
+  from
+    margin-top: calc(#{$videoH} / 2.2)
+    margin-left: calc(#{$videoW} / 2.2)
+  to
+    margin: 0
+
+
