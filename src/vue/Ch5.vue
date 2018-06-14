@@ -69,6 +69,24 @@
             <sync-bind :name.sync="name"
                        :hp.sync="hp"></sync-bind>
         </div>
+        <div>
+            <h2>Toggle Component</h2>
+            <button v-on:click="toggle^=1">Toggle</button>
+            <div v-bind:is="component"></div>
+        </div>
+        <div>
+            <h2>Usage Mixin</h2>
+            <mix-in-a></mix-in-a>
+            <mix-in-b></mix-in-b>
+        </div>
+        <div>
+            <h2>Message Board Component</h2>
+            <button v-on:click="currentMessage='message-board'">message list</button>
+            <button v-on:click="currentMessage='message-form'">message form</button>
+            <keep-alive>
+                <div v-bind:is="currentMessage"></div>
+            </keep-alive>
+        </div>
     </div>
 </template>
 
@@ -77,6 +95,24 @@
     import SimpleSlotComponent from '../components/ch5Components/SimpleSlotComponent'
     import MyCalendarComponent from '../components/ch5Components/MyCalendarComponent'
     import SyncBindComponent from '../components/ch5Components/SyncBindComponent'
+    import ToggleAComponent from '../components/ch5Components/ToggleAComponent'
+    import ToggleBComponent from '../components/ch5Components/ToggleBComponent'
+    import AttackedComponent from '../components/ch5Components/AttackedComponent'
+    import RefChildComponent from '../components/ch5Components/RefChildComponent'
+    import SendEventComponent from '../components/ch5Components/SendEventComponent'
+    import MessageBoardComponent from '../components/ch5Components/MessageBoardComponent'
+    import MessageFormComponent from '../components/ch5Components/MessageFormComponent'
+
+    const mixin = {
+        created () {
+            this.hello()
+        },
+        methods: {
+            hello () {
+                console.log('Mixin->hello()')
+            }
+        }
+    };
 
     const
         compChildComponent = {
@@ -93,35 +129,13 @@
                 val: String
             }
         },
-        sendEventComponent = {
-            template: "<button @click='handleClick'>click!</button>",
-            methods: {
-                handleClick(){
-                    this.$emit('childs-event')
-                }
-            }
+        MixinAComponent = {
+            mixins: [mixin],
+            template: '<p>MixinAComponent</p>'
         },
-        attackedComponent = {
-            template: '<li>{{ name }} HP.{{ hp }}\<button v-on:click="doAttack">attack</button></li>',
-            props: {
-                id: Number,
-                name: String,
-                hp: Number
-            },
-            methods: {
-                doAttack () {
-                    this.$emit('attack', this.id)
-                }
-            }
-        },
-        refChildComponent = {
-            template: "<button>click!</button>",
-            created() {
-                console.log('ref: created()');
-                this.$on('open', () => {
-                    console.log('refChild->ref: this.$on()');
-                })
-            }
+        MixinBComponent = {
+            mixins: [mixin],
+            template: '<p>MixinBComponent</p>'
         };
     export default {
         name: "Ch5",
@@ -132,7 +146,10 @@
                 typeVal: '',
                 current: '',
                 name: 'slime',
+                currentMessage: 'message-board',
+                componentTypes: ['toggle-a', 'toggle-b'],
                 hp: 100,
+                toggle: 0,
                 list: [
                     { id: 1, name: 'slime', hp: 100 },
                     { id: 2, name: 'goblin', hp: 200 },
@@ -150,12 +167,18 @@
             'comp-child': compChildComponent,
             'props-send': propsComponent,
             'props-type': propsTypeComponent,
-            'send-event': sendEventComponent,
-            'attacked': attackedComponent,
-            'ref-child': refChildComponent,
+            'send-event': SendEventComponent,
+            'attacked': AttackedComponent,
+            'ref-child': RefChildComponent,
             'simple-slot': SimpleSlotComponent,
             'my-calender': MyCalendarComponent,
-            'sync-bind': SyncBindComponent
+            'sync-bind': SyncBindComponent,
+            'toggle-a': ToggleAComponent,
+            'toggle-b': ToggleBComponent,
+            'mix-in-a': MixinAComponent,
+            'mix-in-b': MixinBComponent,
+            'message-board': MessageBoardComponent,
+            'message-form': MessageFormComponent
         },
         methods: {
             parentsMethod () {
@@ -168,6 +191,12 @@
             handleRef () {
                 console.log('handleRef()');
                 this.$refs.child.$emit('open')
+            }
+        },
+        computed: {
+            component () {
+                console.log (this.componentTypes[this.toggle])
+                return this.componentTypes[this.toggle]
             }
         }
     }
