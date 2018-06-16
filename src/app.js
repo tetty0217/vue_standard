@@ -17,3 +17,4 @@ Vue.component('global-component', {
 
 const app = new Vue(Ch6);
 app.$mount('#app');
+
