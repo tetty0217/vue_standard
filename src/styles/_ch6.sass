@@ -1,0 +1,25 @@
+.transition-wrap
+  div
+    div
+      border-bottom: none
+      padding: 0
+
+.v-enter-active, .v-leave-active
+  transition: opacity .5s
+.v-enter, .v-leave-to
+  opacity: 0
+
+.startedShow
+  @include squareSizing(100, #000)
+.start-enter-active
+  transition: opacity 2s
+.start-enter
+  opacity: 0
+
+.key-enter, .key-leave-to
+  opacity: 0
+.key-enter-active
+  transition: opacity .5s
+.key-leave-active
+  transition: opacity .5s
+  position: absolute
